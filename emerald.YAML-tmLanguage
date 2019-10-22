@@ -1,0 +1,71 @@
+# [PackageDev] target_format: plist, ext: tmLanguage
+name: Emerald
+scopeName: source.emerald
+fileTypes:
+- em
+
+patterns:
+- include: '#line-comment'
+- include: '#declarations'
+- include: '#keywords'
+- include: '#literals'
+
+repository:
+  declarations:
+    patterns:
+    - begin: '\b(def)\b\s*([_a-zA-Z][_a-zA-Z0-9]*)\s*(:)?'
+      beginCaptures:
+        '1': {name: keyword.other.declaration.emerald}
+        '2': {name: entity.name.function.emerald}
+        '3': {name: punctuation.separator.colon.emerald}
+      patterns:
+        - match: ([_a-zA-Z][_a-zA-Z0-9]*)
+          name: variable.parameter.emerald
+        - match: ','
+          name: punctuation.separator.comma.emerald
+      end: \n
+    - match: '\b(object)\b\s*([_a-zA-Z][_a-zA-Z0-9]*)\s*(?:(clones) ([_a-zA-Z][_a-zA-Z0-9]*))?'
+      captures:
+        '1': {name: keyword.other.declaration.emerald}
+        '2': {name: entity.name.object.emerald}
+        '3': {name: keyword.other.emerald}
+        '4': {name: entity.name.object-parent.emerald}
+
+  keywords:
+    patterns:
+    - name: keyword.other.declaration.emerald
+      match: \b(let)\b
+    - name: keyword.control.emerald
+      match: \b(import|if|then|else|do|end)\b
+    - name: keyword.control.loop.emerald
+      match: \b(for|to|downto|by|while)\b
+    - name: keyword.other.emerald
+      match: \b(clone|clones|super|print|return)\b
+    - name: keyword.operator.logical.emerald
+      match: (!|&&|\|\|)
+    - name: keyword.operator.comparison.emerald
+      match: (==|!=|<|>|<=|>=)
+    - name: keyword.operator.arithmetic.emerald
+      match: (\||^|&|<<|>>|+|\-|\*|\/|%)
+    - name: keyword.operator.assignment.emerald
+      match: (=|+=|-=|*=|/=|%=)
+
+  line-comment:
+    name: comment.line.emerald
+    begin: '#'
+    end: \n
+
+  literals:
+    patterns:
+    - name: constant.language.emerald
+      match: \b(None|True|False)\b
+    - name: constant.numeric.emerald
+      match: \b(-?[0-9]+(?:\.[0-9]+)?)\b
+    - name: string.quoted.single.emerald
+      begin: ''''
+      end: ''''
+    - name: string.quoted.double.emerald
+      begin: '"'
+      end: '"'
+    - name: variable.other.emerald
+      match: \b([_a-zA-Z][_a-zA-Z0-9]*)\b
